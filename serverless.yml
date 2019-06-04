@@ -22,10 +22,8 @@ service: sample-serverless-connector # NOTE: update this with your service name
 provider:
   name: aws
   runtime: nodejs10.x
-
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  region: us-east-1
+  stage: dev
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
