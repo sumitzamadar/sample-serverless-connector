@@ -25,5 +25,9 @@
   "homepage": "https://github.com/sumitzamadar/sample-serverless-connector#readme",
   "devDependencies": {
     "serverless-offline": "^5.0.1"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^2.6.0"
   }
 }
