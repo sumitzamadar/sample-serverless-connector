@@ -19,6 +19,10 @@ service: sample-serverless-connector # NOTE: update this with your service name
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
+# List of plugins to be used
+plugins:
+  - serverless-offline
+
 provider:
   name: aws
   runtime: nodejs10.x

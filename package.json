@@ -1,0 +1,29 @@
+{
+  "name": "sample-serverless-connector",
+  "version": "1.0.0",
+  "description": "Sample Serverless Connector Template",
+  "main": "connector.js",
+  "scripts": {
+    "test": "serverless invoke local --function discover"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sumitzamadar/sample-serverless-connector.git"
+  },
+  "keywords": [
+    "aws",
+    "serverless",
+    "nodejs",
+    "mobileflows",
+    "connector"
+  ],
+  "author": "VMware MobobileFlows",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/sumitzamadar/sample-serverless-connector/issues"
+  },
+  "homepage": "https://github.com/sumitzamadar/sample-serverless-connector#readme",
+  "devDependencies": {
+    "serverless-offline": "^5.0.1"
+  }
+}
