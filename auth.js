@@ -6,15 +6,26 @@ require('./getPublicKey').getKey().then(data => {
     console.log(err);
 })
 
-exports.handler = (event, context, callback) => {
-    let token = extractTokenFromHeader(event) || '';
-    const isValid = validateToken(token);
-    if (isValid) {
-        callback(null, generatePolicy('user', 'Allow', event.methodArn));
-    } else {
-        callback('Unauthorized');
-    }
+//  Incase in future if we need this as 
+//  a Lambda authorizer, we can use it as well
 
+// exports.handler = (event, context, callback) => {
+//     let token = extractTokenFromHeader(event) || '';
+//     const isValid = validateToken(token);
+//     if (isValid) {
+//         callback(null, generatePolicy('user', 'Allow', event.methodArn));
+//     } else {
+//         callback('Unauthorized');
+//     }
+
+// }
+
+module.exports =  {
+    authenticateJwtToken : (event) => {
+        let token = extractTokenFromHeader(event) || '';
+        return validateToken(token);
+        // const isValid = validateToken(token); 
+    }
 }
 
 function extractTokenFromHeader(e) {
