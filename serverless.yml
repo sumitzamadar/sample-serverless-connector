@@ -29,6 +29,20 @@ provider:
   region: us-east-1
   stage: dev
 
+  
+functions:
+  app:
+    handler: app.server # reference the file and exported method
+    events: # events trigger lambda functions
+      - http: # this is an API Gateway HTTP event trigger
+          path: /
+          method: ANY
+          cors: true
+      - http: # all routes get proxied to the Express router
+          path: /{proxy+}
+          method: ANY
+          cors: true
+
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
 #    - Effect: "Allow"
@@ -58,14 +72,14 @@ provider:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
-functions:
-  discover:
-    handler: connector.discover
-    events:
-      - http:
-          path: connector/discovery
-          method: get
-          cors: true
+# functions:
+#   discover:
+#     handler: connector.discover
+#     events:
+#       - http:
+#           path: connector/discovery
+#           method: get
+#           cors: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
