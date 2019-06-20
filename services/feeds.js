@@ -1,8 +1,8 @@
 const config = {
-    "consumer_key": 'iriCOqsEYpwi2ad9Oxnb5GUEc',
-    "consumer_secret": 'RIvtZN1jeGbkfYlOVnBT5DH7i56tY71GndAVMc9R2etZmAIf3F',
-    "access_token_key" : '500666008-lYRReZMQwy7oiNEADVPNnbYT0vxvnKkHYjte656C',
-    "access_token_secret" : 'sZk6NHlPfLOvPYINz2wvuGhfxi0pSHTUzBoNbxEzbfXkp'
+    "consumer_key": 'xxxxxxxx',
+    "consumer_secret": 'xxxxxxxxxxx',
+    "access_token_key" : 'xxxxxxxxxxxx',
+    "access_token_secret" : 'xxxxxxxxxxx'
 };
 
 const Twitter = require('twitter');
