@@ -1,11 +1,14 @@
 const url = require('url');
+const constant = require('../utils/constant');
+
 
 "use strict"
 
 module.exports = function(req, res) {
 
     const base = getFullUrl(req);
-
+    constant.baseUrlRef = req.baseUrl || "";
+ 
     const body = {
         image: { href: `${base}images/twitter.png`},
         object_types: {
@@ -20,7 +23,7 @@ module.exports = function(req, res) {
                     }
                 },
                     endpoint: {
-                        href : `${base}cards/request`
+                        href : `${base}${constant.endPointHref}`
                     }
                 }
             }
@@ -30,10 +33,11 @@ module.exports = function(req, res) {
     res.json(body);
 }
 
+
 function getFullUrl(req) {
     return url.format({
         protocol: req.protocol,
         host: req.get('host'),
         pathname: req.originalUrl
-      });
+      })
 }

@@ -3,11 +3,9 @@
 const express = require('express');
 const app = express();
 const connector_discovery = require('./services/discovery');
-//const feeds = require('./feeds');
+const cardResponse = require('./services/cardResponse');
 const sls = require('serverless-http');
-
-
-
+const constant = require('./utils/constant');
 
 
 app.use(express.static('public'));
@@ -16,36 +14,37 @@ app.use(express.urlencoded({extended: true}));
 app.set('trust proxy', true);
 
 
-
+// Discovery Handler
 app.get('/', function(req, res) {
+    console.log('called discovery');
     connector_discovery(req, res);
    
 });
 
 app.get('/route1', function(req,res) {
+    console.log('calling route1');
     res.status(200).send("Route 1 working");
 })
 
 
-// app.post('/cards/request', function(req,res) {
+// Handle All Actions
 
-//     const keywords = req.body.keyword;
-//     const regex = /([#])\w+/gm;
-//     let match1 = keywords.match(regex);
+app.post('/getMoreTweets', (req, res) => {
+    console.log('Fetching Tweets with ....');
+    console.log('req =>',req.body);
+    res.status(200).send(`Fetching success with : ${req.body.newKey}`);
+})
 
-//     const regexexec = regex.exec(keywords);
 
-//     console.log(`match is ${match1} and exec is ${regexexec} `);
-//     let first = match1.toString().split(',')[0];
-  
-//         const res1 = feeds.getTweets(first).then((data) => {
-//        // console.log('success'+data);
-//         res.json(data);
-//     }).catch(err => {
-//         console.log('error'+err);
-//         res.json(err);
-//     })
-// })
+// Handle the End Point for cards request
 
-module.exports.server = sls(app);
+app.post(`/${constant.endPointHref}`, function(req,res) {
+    console.log('called cards request');
+    cardResponse.getResponse(req,res);
+})
+
+// Package the express app in the serverless package to deploy it. In our case as AWS Lambda
+module.exports.server = sls(app, {
+    binary: ['image/*']
+});
 
