@@ -35,6 +35,22 @@ To install serveless framework run:</br>
  In this application, we have a express app that we have converted to serverless using the serverless-http npm package.
  
  On this express app, you can configure your endpoints.
- Currently
-
-
+ For a mobile flows connector you need a discovery url, card request url and actions end points if any.
+ In the sample connector, we have similar end points:
+ 1. '/' => for Discovery response
+ 2. '/${constant.endPointHref}' => for the end point href i.e card request.
+ 3. '/getMoreTweets' => for the object actions
+ 
+ If you need more end points you can configure/add the same like these.
+ 
+ Once you clone this app, you need to install all the dependencies. For this run </br>
+ => npm install
+ 
+ Once this is done, you can test the app locally/offline with the command </br>
+ 
+ serverless offline
+ 
+ On running this command you will get some endpoints that you can test locally. Once you are satisfied with the response, to deploy it on aws, you can run </br>
+ 
+ serverless deploy
+ 
