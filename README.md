@@ -27,8 +27,8 @@ To install serveless framework run:</br>
  Now we are ready, lets start.
  
  Either you can clone this git repo and start build your business logic on top of it, or create a brand new serverless template.
- If you want to create a brand new  template, run
- =>serverless create --template aws-nodejs
+ If you want to create a brand new  template, run </br>
+ =>serverless create --template aws-nodejs </br>
  The above command will create a new serverless template for you and you can start configuring it.
  
  Once you have cloned this git repo, you can start editing it with your own code.
