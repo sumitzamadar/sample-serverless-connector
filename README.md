@@ -20,8 +20,8 @@ and start entering your details. For more info, please refer https://docs.aws.am
 
 Next we need to install the serverless framwork.
 The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require.
-To install serveless framework run:
- => npm install serverless -g
+To install serveless framework run:</br>
+ => npm install serverless -g </br>
  The above command install serverless at the global level,now you can create a serverless application anywhere on your system and deploy it.
  
  Now we are ready, lets start.
