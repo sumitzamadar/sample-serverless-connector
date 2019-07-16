@@ -5,56 +5,54 @@ This is a sample Mobile Flows Connector built using NodeJS on Amazon Web Service
 We are using the [Serverless Framework](www.serverless.com) for developing and deploying the same to AWS Cloud.
 
 ## Prerequisites
+- Node (8.6.0+)
+- NPM (5.3.0+)
 - An AWS account
-- Knowledge on NodeJS
 - AWS CLI
 - Serverless Framework
 
-## Installation
-- Node (8.6.0+)
-- NPM (5.3.0+)
-- Any editor (preferred Visual Studio Code)
-> Blog: http://blog.teamtreehouse.com/install-node-js-npm-windows
+## Installation & Configuration
+- AWS CLI
+- Serverless Framework
 
-First we need to install and configure AWS Command Line Interface (AWS CLI). The AWS CLI is an open source tool that enables you to interact with AWS services using commands in your command-line shell. AWS requires that all incoming requests are cryptographically signed. The AWS CLI does this for you. To check if aws cli is installed,  type `aws --version` on commnad prompt. If installed, it will show the version like: `aws-cli/1.16.167 Python/3.6.0 Windows/10 botocore/1.12.157`. Please refer to [this guide](https://docs.aws.amazon.com/cli/latest/userguide/install-windows.html), in case aws cli is not installed.
-Once installed, the next step is to configure the cli with your credentials.
+First you need to install and configure AWS Command Line Interface (AWS CLI). 
+AWS CLI is a command line tool which helps to work with AWS services using commands from your command-line shell. Please refer to https://docs.aws.amazon.com/cli/latest/userguide/install-windows.html, to install the same.
 
-To configure aws cli, type =>: aws configure
-and start entering your details. For more info, please refer https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html
+Once done, you can use the following command on the command prompt, to see if AWS CLI is installed:</br>
+`aws --version`</br>
 
-Next we need to install the serverless framwork.
-The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require.
-To install serveless framework run:</br>
- => npm install serverless -g </br>
- The above command install serverless at the global level,now you can create a serverless application anywhere on your system and deploy it.
+It displays the details of aws-cli version as shown like:</br>
+`aws-cli/1.16.167 Python/3.6.0 Windows/10 botocore/1.12.157`</br>
+
+Once installed, the next step is to configure the AWS CLI with your credentials.
+
+To configure AWS CLI installation, type `aws configure` and the AWS CLI prompts for information like access key, secret access key, AWS Region, and output format. These information will be used any time you run an AWS CLI command. For more info, please refer to  https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html
+
+Now you need to install the Serverless Framework.
+The Serverless Framework helps you develop and deploy your AWS Lambda functions easily, along with the needed AWS infrastructure resources.
+To install Serverless Framework run:</br>
+`npm install serverless -g`</br>
+The above command install serverless at the global level. And now you can create a serverless application anywhere on your system and deploy it.
  
- Now we are ready, lets start.
- 
- Either you can clone this git repo and start build your business logic on top of it, or create a brand new serverless template.
- If you want to create a brand new  template, run </br>
- =>serverless create --template aws-nodejs </br>
- The above command will create a new serverless template for you and you can start configuring it.
- 
- Once you have cloned this git repo, you can start editing it with your own code.
- In this application, we have a express app that we have converted to serverless using the serverless-http npm package.
- 
- On this express app, you can configure your endpoints.
- For a mobile flows connector you need a discovery url, card request url and actions end points if any.
- In the sample connector, we have similar end points:
- 1. '/' => for Discovery response
- 2. '/${constant.endPointHref}' => for the end point href i.e card request.
- 3. '/getMoreTweets' => for the object actions
- 
- If you need more end points you can configure/add the same like these.
- 
- Once you clone this app, you need to install all the dependencies. For this run </br>
- => npm install
- 
- Once this is done, you can test the app locally/offline with the command </br>
- 
- serverless offline
- 
- On running this command you will get some endpoints that you can test locally. Once you are satisfied with the response, to deploy it on aws, you can run </br>
- 
- serverless deploy
- 
+## How to start
+Clone this git repo, install all the dependencies and start building your business logic on top of it.
+In this application, you used node `express` framework along with `serverless-http` npm package.
+
+For a Mobile Flows connector you need a discovery url, card request url and action(s) end points if any.
+In this sample connector, we have below end points:
+- `/` - connector discovery response
+- `/${constant.endPointHref}` - card request end point
+- `/getMoreTweets` - card actions
+
+If you need more end points, you can add them in similar fashions.
+
+You can test the app locally/offline with the below command:</br>
+`serverless offline`
+
+The above command will create API endpoints which can be tested locally. 
+
+Once testing is done in local environment, you can deploy it to AWS, by running the below command: </br>
+`serverless deploy` </br>
+
+The above comand will create a Cloud Formation stack and create all the required AWS resources, deploy the code and give the publically accessible API end points. 
+
