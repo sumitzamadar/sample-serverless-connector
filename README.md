@@ -1,18 +1,22 @@
-# sample-serverless-connector
-Sample connector template for Mobile Flows using Serverless
+# Mobile Flows Connector
+Sample Mobile Flows Connector using Serverless Architecture
 
-To create any mobile flows connector that will deployed as a lambda, you can refer to this project.
-This is a sample Mobile Flows Connector built using NodeJS on AWS serverless architecture (Lambda). 
-We are using the Serverless Framework[www.serverless.com] for developing and deploying the same to AWS Cloud.
+This is a sample Mobile Flows Connector built using NodeJS on Amazon Web Services (AWS) Serverless Srchitecture (Lambda). 
+We are using the [Serverless Framework](www.serverless.com) for developing and deploying the same to AWS Cloud.
 
-#Prerequisites
-1. An AWS account(free tier will also work).
-2. Knowledge on NodeJs
-3. AWS Cli
-4. Serverless Framework
+## Prerequisites
+- An AWS account
+- Knowledge on NodeJS
+- AWS CLI
+- Serverless Framework
 
-First we need to install and configure aws cli. The AWS Command Line Interface (AWS CLI) is an open source tool that enables you to interact with AWS services using commands in your command-line shell. AWS requires that all incoming requests are cryptographically signed. The AWS CLI does this for you. To check if aws cli is installed,  type aws --version on commnad prompt. If installed, it will give you some version.
-Please refer to https://docs.aws.amazon.com/cli/latest/userguide/install-windows.html, in case aws cli is not installed.
+## Installation
+- Node (8.6.0+)
+- NPM (5.3.0+)
+- Any editor (preferred Visual Studio Code)
+> Blog: http://blog.teamtreehouse.com/install-node-js-npm-windows
+
+First we need to install and configure AWS Command Line Interface (AWS CLI). The AWS CLI is an open source tool that enables you to interact with AWS services using commands in your command-line shell. AWS requires that all incoming requests are cryptographically signed. The AWS CLI does this for you. To check if aws cli is installed,  type `aws --version` on commnad prompt. If installed, it will show the version like: `aws-cli/1.16.167 Python/3.6.0 Windows/10 botocore/1.12.157`. Please refer to [this guide](https://docs.aws.amazon.com/cli/latest/userguide/install-windows.html), in case aws cli is not installed.
 Once installed, the next step is to configure the cli with your credentials.
 
 To configure aws cli, type =>: aws configure
