@@ -1,16 +1,25 @@
-const url = require('url');
-const constant = require('../utils/constant');
-
-
 "use strict"
 
-module.exports = function(req, res) {
+/**
+ * Get base url
+ */
+const getBaseURL = (req) => {
+    const headers = req.headers;
+    const stage = req.baseUrl;
+    const protocol = headers['x-forwarded-proto'] || 'http';
+    const host = headers['host'] || 'localhost';
+    const port = headers['x-forwarded-port'] || '';
+    return (host === 'localhost') ? `${protocol}://${host}:${port}` : `${protocol}://${host}${stage}`;
+};
 
-    const base = getFullUrl(req);
-    constant.baseUrlRef = req.baseUrl || "";
- 
-    const body = {
-        image: { href: `${base}images/twitter.png`},
+/**
+ * Construct discovery response
+ */
+const discovery = (req, res) => {
+    const baseURL = getBaseURL(req);
+
+    return {
+        href: `${baseURL}/images/twitter.png`,
         object_types: {
             card: {
                 doc: {
@@ -22,22 +31,14 @@ module.exports = function(req, res) {
                         regex: "([#])\w+"
                     }
                 },
-                    endpoint: {
-                        href : `${base}${constant.endPointHref}`
-                    }
+                endpoint: {
+                    "href": `${baseURL}/cards/request`
                 }
             }
-        };
-    
+        }
+    };
+};
 
-    res.json(body);
-}
+// Export
+module.exports = discovery;
 
-
-function getFullUrl(req) {
-    return url.format({
-        protocol: req.protocol,
-        host: req.get('host'),
-        pathname: req.originalUrl
-      })
-}

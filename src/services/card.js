@@ -1,10 +1,14 @@
 "use strict"
 
-const feeds = require('./feeds');
-// const constants = require('../utils/constant');
+const twitter = require('./twitter');
 const uuidv4 = require('uuid/v4')
 const crypto = require('crypto')
 
+/**
+ * Get card response
+ * @param {*} req 
+ * @param {*} res 
+ */
 const getResponse = (req, res) => {
     const keywords = req.body.keyword || req.body.tokens && req.body.tokens.keyword || "VMwareIndia";
     const routingPrefix = req.headers && req.headers['x-routing-prefix'] || req.headers['X-Routing-Prefix'];
@@ -14,13 +18,14 @@ const getResponse = (req, res) => {
     const hash = crypto.createHash('sha256')
     const baseURL = getBaseURL(req);
 
-    feeds.getTweets(query).then((data) => {
+    twitter.getTweet(query).then((data) => {
        console.log(data);
        const tweet = data[0];
        const actions = getActions(routingPrefix, req, query, tweet);
 
        twitterCards.objects.push({ 
             id: uuidv4(),
+            name: 'Twitter',
             hash: hash.digest('base64'),
             image:  {
                 href: `${baseURL}/images/twitter.png`
@@ -34,12 +39,12 @@ const getResponse = (req, res) => {
                     {
                         type: 'GENERAL',
                         title: 'User',
-                        description: `${tweet.user.name} @${tweet.user.screen_name}`
+                        description: `${tweet.user.name} (@${tweet.user.screen_name})`
                     },                     
                     {
                         type: 'GENERAL',
                         title: 'Created at',
-                        description: `${tweet.created_at}`
+                        description: tweet.created_at
                     }, 
                 ],
             },
@@ -71,57 +76,76 @@ const getBaseURL = (req) => {
  * @param {*} query 
  */
 const getActions = (prefix, req, query, tweet) => {
-    const markAsFavourite = {
+    const open = {
+        id: uuidv4(),
+        action_key: "OPEN_IN",
+        label: "View Tweet",
+        completed_label: "View Tweet",
+        request: {},
+        primary: true,
+        repeatable: true,
+        type: "GET",
+        url: {
+            "href": `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
+        }
+    };
+
+    const like = {
         id: uuidv4(),
         action_key: "DIRECT",
         label: "Like",
         completed_label: "Liked",
         url: {
-            href: `${prefix}maskAsFavourite`
+            href: `${prefix}card/actions/like`,
         },
         type: "POST",
+        request: {
+            tweet_id: tweet.id_str,
+        },
+    };
+
+    const retweet = {
+        id: uuidv4(),
+        action_key: "DIRECT",
+        label: "Retweet",
+        completed_label: "Retweeted",
+        allow_repeated: false,
+        type: "POST",
+        url: {
+            href: `${prefix}card/actions/retweet`,
+        },
         request: {
             tweet_id: tweet.id_str
         },
     };
 
-    const openTweet = {
+    const reply = {
         id: uuidv4(),
-        action_key: "OPEN_IN",
-        label: "View Tweet",
-        request: {},
-        repeatable: true,
-        type: "GET",
-        url: {
-            "href": `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
-        }
-    };
-
-    const moreTweets = {
-        id: uuidv4(),
-        action_key: "USER_INPUT",
-        label: "Get more Tweets",
+        action_key: "DIRECT",
+        label: "Reply",
+        completed_label: "Reply",
         allow_repeated: true,
-        url: {
-            href: `${prefix}getMoreTweets`
-        },
         type: "POST",
-        request: {
-            keyword: query
+        url: {
+            href: `${prefix}card/actions/reply`,
         },
-        user_input: {
-            id: "newKey",
-            label: `Fetch tweet with ${query} and ...`
-        }
+        request: {
+            tweet_id: tweet.id_str,
+            author_name: tweet.user.screen_name,
+        },
+        user_input: [
+            {
+              "id": "reply_text",
+              "label": "Tweet your reply",
+            },
+        ]    
     };
 
-    return [
-        openTweet,
-        markAsFavourite,
-        moreTweets, 
-    ];
+
+    return [open, like, retweet, reply];
 };
 
+// Export
 module.exports = {
     getResponse: getResponse,
 };

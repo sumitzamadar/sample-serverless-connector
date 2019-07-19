@@ -1,54 +1,81 @@
 "use-strict";
 
+// Core modules
+const path = require('path');
+
+// Modules from `node_modules`
 const express = require('express');
-const app = express();
+
+// Custom modules
 const discovery = require('./services/discovery');
 const card = require('./services/card');
-// const sls = require('serverless-http');
-const constant = require('./utils/constant');
-const feeds = require('./services/feeds');
+const twitter = require('./services/twitter');
 
+// Create express server
+const app = express();
 
-app.use(express.static('public'));
-app.use(express.json());
+// Set public/static folder
+const publicPath = path.join(__dirname, '../public')
+app.use(express.static(publicPath));
+
+// Handle request body
+app.use(express.json({ type: '*/*' }));
 app.use(express.urlencoded({extended: true}));
 app.set('trust proxy', true);
 
-
-// Discovery Handler
-app.get('/', function(req, res) {
-    discovery(req, res);
+// Discovery
+app.get('', (req, res) => {
+    const response = discovery(req, res);
+    res.send(response);
 });
 
-app.get('/route1', function(req, res) {
-    res.status(200).send("Route 1 working");
-})
+// Card request
+app.post('/cards/request', (req, res) => {
+    card.getResponse(req, res);
+});
 
-// Handle All Actions
-app.post('/getMoreTweets', (req, res) => {
-    res.status(200).send(`Fetching success with : ${req.body.newKey}`);
-})
-
-app.post('/maskAsFavourite', (req, res) => {
+// Card action -like a tweet
+app.post('/card/actions/like', (req, res) => {
     const tweet_id = req.body.tweet_id;
-    feeds.markTweetAsFavoirite(tweet_id)
+
+    twitter.likeTweet(tweet_id)
     .then((data) => {
-        res.status(200).send('Tweet marked as favourite');
+        res.status(200).send('Tweet liked.');
     })
     .catch((err) => {
-        res.status(502).send('Failed');
+        res.status(502).send(err.message ? err.message :  'Tweet like failed!');
     })
 });
 
-// Handle the End Point for cards request
-app.post(`/${constant.endPointHref}`, function(req,res) {
-    card.getResponse(req, res);
-})
+// Card action - re-tweet
+app.post('/card/actions/retweet', (req, res) => {
+    const tweet_id = req.body.tweet_id;
 
-// // Package the express app in the serverless package to deploy it. In our case as AWS Lambda
-// module.exports.server = sls(app, {
-//     binary: ['image/*']
-// });
+    twitter.reTweet(tweet_id)
+    .then((data) => {
+        res.status(200).send('Retweeted.');
+    })
+    .catch((err) => {
+        res.status(502).send(err.message ? err.message :  'Retweet failed!');
+    })
+});
 
+// Card action - reply tweet
+app.post('/card/actions/reply', (req, res) => {
+    const tweet_id = req.body.tweet_id;
+    const reply_text = req.body.reply_text;
+    const author_name = req.body.author_name;
+
+    twitter.replyTweet(tweet_id, reply_text, author_name)
+    .then((data) => {
+        res.status(200).send('Tweet replied.');
+    })
+    .catch((err) => {
+        res.status(502).send(err.message ? err.message :  'Tweet reply failed!');
+    })
+});
+
+
+// Export
 module.exports = app;
 
