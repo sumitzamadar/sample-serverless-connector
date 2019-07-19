@@ -1,10 +1,6 @@
 "use strict"
 
 const config = {
-    "consumer_key": 'vkbPZr8s1oxNuEfjCQKZalGtk',
-    "consumer_secret": 'pkbkLLt0ByVUppiuxAZkhbdWK9JQwoweA9MmCxFhw9NyhPIOKU',
-    "access_token_key" : '59386583-ZemSNv2sHETuOtCdp1LTu6wK7cA9zf3LGD4UgoMzp',
-    "access_token_secret" : '9755RmIV4yQ4y07hbDHOtXnclbplgan7fkptZUMAe3t1Q'
 };
 
 const Twitter = require('twitter');
