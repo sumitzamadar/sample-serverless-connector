@@ -3,6 +3,7 @@
 const twitter = require('./twitter');
 const uuidv4 = require('uuid/v4')
 const crypto = require('crypto')
+const constant = require('../utils/constant');
 
 /**
  * Get card response
@@ -61,11 +62,14 @@ const getResponse = (req, res) => {
  * Function to get base URL
  */
 const getBaseURL = (req) => {
+    console.log(req);
+    
     const headers = req.headers;
-    const stage = req.baseUrl;
+    const stage = req.baseUrl || "";
     const protocol = headers['x-forwarded-proto'] || 'http';
     const host = headers['host'] || 'localhost';
     const port = headers['x-forwarded-port'] || '';
+    constant.baseUrlRef = stage;
     return (host === 'localhost') ? `${protocol}://${host}:${port}` : `${protocol}://${host}${stage}`;
 };
 
@@ -76,6 +80,10 @@ const getBaseURL = (req) => {
  * @param {*} query 
  */
 const getActions = (prefix, req, query, tweet) => {
+
+console.log('---X-Routing-Prefix---: ' + prefix);    
+console.log('--- stage ---: ' + constant.baseUrl);
+
     const open = {
         id: uuidv4(),
         action_key: "OPEN_IN",
@@ -96,7 +104,7 @@ const getActions = (prefix, req, query, tweet) => {
         label: "Like",
         completed_label: "Liked",
         url: {
-            href: `${prefix}card/actions/like`,
+            href: `${prefix}${constant.baseUrl}/actions/like`,
         },
         type: "POST",
         request: {
@@ -112,7 +120,7 @@ const getActions = (prefix, req, query, tweet) => {
         allow_repeated: false,
         type: "POST",
         url: {
-            href: `${prefix}card/actions/retweet`,
+            href: `${prefix}${constant.baseUrl}/actions/retweet`,
         },
         request: {
             tweet_id: tweet.id_str
@@ -127,7 +135,7 @@ const getActions = (prefix, req, query, tweet) => {
         allow_repeated: true,
         type: "POST",
         url: {
-            href: `${prefix}card/actions/reply`,
+            href: `${prefix}${constant.baseUrl}/actions/reply`,
         },
         request: {
             tweet_id: tweet.id_str,

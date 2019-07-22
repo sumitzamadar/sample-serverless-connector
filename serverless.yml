@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: sample-serverless-connector-test # NOTE: update this with your service name
+service: sample-serverless-connector # NOTE: update this with your service name
 #app: your-app-name
 #tenant: your-tenant-name
 
@@ -25,7 +25,7 @@ plugins:
 
 custom:
     authorizer:
-        arn: arn:aws:lambda:us-east-1:485793342887:function:SampleJwtAuthorizer
+        arn: arn:aws:lambda:us-east-1:066069590386:function:sampleJwtAuthorizer
         resultTtlInSeconds: 0
         identitySource: method.request.header.Authorization
         identityValidationExpression: '.*'
@@ -39,7 +39,7 @@ provider:
 
   apiGateway:
     binaryMediaTypes:
-      - image/*
+      - '*/*'
 
   
 functions:

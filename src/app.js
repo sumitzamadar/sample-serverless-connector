@@ -19,7 +19,7 @@ const publicPath = path.join(__dirname, '../public')
 app.use(express.static(publicPath));
 
 // Handle request body
-app.use(express.json({ type: '*/*' }));
+app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.set('trust proxy', true);
 
@@ -35,7 +35,7 @@ app.post('/cards/request', (req, res) => {
 });
 
 // Card action -like a tweet
-app.post('/card/actions/like', (req, res) => {
+app.post('/actions/like', (req, res) => {
     const tweet_id = req.body.tweet_id;
 
     twitter.likeTweet(tweet_id)
@@ -48,7 +48,7 @@ app.post('/card/actions/like', (req, res) => {
 });
 
 // Card action - re-tweet
-app.post('/card/actions/retweet', (req, res) => {
+app.post('/actions/retweet', (req, res) => {
     const tweet_id = req.body.tweet_id;
 
     twitter.reTweet(tweet_id)
@@ -61,7 +61,7 @@ app.post('/card/actions/retweet', (req, res) => {
 });
 
 // Card action - reply tweet
-app.post('/card/actions/reply', (req, res) => {
+app.post('/actions/reply', (req, res) => {
     const tweet_id = req.body.tweet_id;
     const reply_text = req.body.reply_text;
     const author_name = req.body.author_name;
