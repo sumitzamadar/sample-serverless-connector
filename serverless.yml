@@ -23,26 +23,20 @@ service: sample-serverless-connector # NOTE: update this with your service name
 plugins:
   - serverless-offline
 
-custom:
-    authorizer:
-        arn: arn:aws:lambda:us-east-1:066069590386:function:sampleJwtAuthorizer
-        resultTtlInSeconds: 0
-        identitySource: method.request.header.Authorization
-        identityValidationExpression: '.*'
-
 provider:
   name: aws
   runtime: nodejs10.x
   region: us-east-1
   stage: dev
 
-
   apiGateway:
     binaryMediaTypes:
       - '*/*'
-
   
 functions:
+  auth:
+    handler: src/authorizer/authorizer.auth
+    cors: true
   app:
     handler: lambda.handler 
     events: 
@@ -58,7 +52,7 @@ functions:
           path: /{proxy+}
           method: ANY
           cors: true
-          authorizer: ${self:custom.authorizer}
+          authorizer: auth
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
